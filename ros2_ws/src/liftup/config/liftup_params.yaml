@@ -1,0 +1,4 @@
+liftup_node:
+  ros__parameters:
+    can_id: 0x001
+    reduction_ratio: 0.01
