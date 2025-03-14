@@ -32,7 +32,7 @@ bool SocketCanInterface::Send(const CanFrame &frame) {
     return false;
   }
 
-  RCLCPP_INFO(logger_, "Sent CAN frame with ID: 0x%X", frame.arbitration_id);
+  //RCLCPP_INFO(logger_, "Sent CAN frame with ID: 0x%X", frame.arbitration_id);
   return true;
 }
 
@@ -61,7 +61,7 @@ bool SocketCanInterface::Receive(CanFrame *frame, int timeout_ms) {
   frame->dlc = can_frame.can_dlc;
   frame->data.assign(can_frame.data, can_frame.data + can_frame.can_dlc);
 
-  RCLCPP_INFO(logger_, "Received CAN frame with ID: 0x%X", frame->arbitration_id);
+  //RCLCPP_INFO(logger_, "Received CAN frame with ID: 0x%X", frame->arbitration_id);
   return true;
 }
 

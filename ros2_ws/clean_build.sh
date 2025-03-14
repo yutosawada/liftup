@@ -18,8 +18,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # ランチファイルを実行
-ros2 launch liftup liftup_launch.py
-if [ $? -ne 0 ]; then
-  echo "Failed to launch liftup_launch.py"
-  exit 1
-fi
+# ros2 launch liftup liftup_launch.py
+# if [ $? -ne 0 ]; then
+#  echo "Failed to launch liftup_launch.py"
+#  exit 1
+# fi

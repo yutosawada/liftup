@@ -1,4 +1,26 @@
 liftup_node:
   ros__parameters:
-    can_id: 0x001
-    reduction_ratio: 0.01
+    canparameters:
+      can_id: 0x001
+      interface_name: "can0"
+
+    homing_parameter:
+      method: -1 # 24:押し当て方式（正方向開始） 28:押し当て方式（負方向開始）
+      acceleration: 3000
+      offset: 1000
+      torque_limit: 1 # [0.1%]
+      timeout: 1000
+      homePosition: 0
+      speed_serch_for_switch: 100
+      speed_serch_for_zero: 100
+      starting_velocity: 100
+
+    position_mode_parameter:
+      torque_limit: 100.                # [%]
+      software_position_limit_positive: 10000  # 正方向のソフトウェア位置リミット
+      software_position_limit_negative: -10000 # 負方向のソフトウェア位置リミット
+      profile_velocity: 300            # プロファイル速度
+      end_velocity: 0                  # 位置決め終了時の速度
+      profile_acceleration: 1000       # プロファイル加速
+      profile_deceleration: 1000       # プロファイル減速
+      quick_stop_deceleration: 1500    # クイックストップ減速

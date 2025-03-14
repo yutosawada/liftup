@@ -16,11 +16,17 @@ class MotorControllerInterface {
  public:
   virtual ~MotorControllerInterface() = default;
 
-  // モータコントロールコマンドを送信する
-  virtual bool SendMotorCommand(const MotorCommand &command) = 0;
+  // モータのステータスを取得する
+  virtual bool GetMotorStatus(uint16_t *out_status) = 0;
+  virtual bool GetTorqueActualValue(uint16_t *out_torque) = 0;
+  virtual bool GetVelocityActualValue(uint32_t *out_velocity) = 0;
+  virtual bool GetPositionActualValue(uint32_t *out_position) = 0;
 
-
+  virtual bool SetMaxTorque(uint16_t max_torque) = 0;
 };
+
+
+
 
 }  // namespace motor_controller
 

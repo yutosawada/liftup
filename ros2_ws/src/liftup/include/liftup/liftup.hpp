@@ -9,12 +9,24 @@
 
 class Liftup {
 public:
-  Liftup(uint32_t can_id);
+  Liftup(motor_controller::CanParameters params, motor_controller::HomingParameter homing_param, motor_controller::PositionModeParameter pos_mode_param);
   ~Liftup();
 
-  void Start();
-  void Stop();
-  std::string GetStatus() const;
+  bool MotorOn();
+  bool MotorOff();
+  bool ErrorReset();
+  bool LiftUp();
+  bool LiftDown();
+  bool MoveHomePosition();
+
+  bool SelectMode();
+
+  bool GetMotorStatus(uint16_t *out_status) const;
+
+  // 追加: モーターコントローラーへのゲッター
+  std::shared_ptr<motor_controller::OrientalMotorController> GetMotorController() const {
+    return motor_controller_;
+  }
 
 private:
   bool is_running_;

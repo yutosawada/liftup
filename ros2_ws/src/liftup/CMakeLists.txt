@@ -7,20 +7,18 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# サービス用
-find_package(rosidl_default_generators REQUIRED)
-
-# C++ノード用
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 # カスタムサービスの生成
-# rosidl_generate_interfaces(${PROJECT_NAME}
-#  "msg/liftupStatus.msg"
-#  "srv/ServoOn.srv"
-#  DEPENDENCIES builtin_interfaces
-# )
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/GetMotorStatus.srv"
+  "srv/MotorOn.srv"
+  "srv/MotorOff.srv"                   # 追加
+  DEPENDENCIES builtin_interfaces
+)
 
 # 生成されたヘッダを使う場合に必要
 ament_export_dependencies(rosidl_default_runtime)
@@ -48,8 +46,8 @@ ament_target_dependencies(liftup_node_entrypoint
 )
 
 # サービスメッセージの依存を追加
-# rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
-# target_link_libraries(liftup_node_entrypoint "${cpp_typesupport_target}")
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(liftup_node_entrypoint "${cpp_typesupport_target}")
 
 # 実行ファイルをインストール
 install(TARGETS
