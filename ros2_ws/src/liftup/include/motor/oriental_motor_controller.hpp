@@ -96,7 +96,8 @@ class OrientalMotorController : public MotorControllerInterface {
   bool SetEndVelocity(uint32_t end_velocity);
   bool SetProfileAcceleration(uint32_t acceleration);
   bool SetProfileDeceleration(uint32_t deceleration);
-  bool SetQuickStopDeceleration(uint32_t quick_stop_deceleration);
+  bool SetQuickStopDeceleration(uint32_t quick_stop_deceleration);  
+  bool MonitorPositionDriveProfileOperationReady();
   
  private:
   rclcpp::Logger logger_;

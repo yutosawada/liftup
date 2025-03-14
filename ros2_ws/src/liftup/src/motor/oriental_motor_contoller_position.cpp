@@ -171,4 +171,25 @@ bool OrientalMotorController::SetQuickStopDeceleration(uint32_t quick_stop_decel
     RCLCPP_INFO(logger_, "Quick stop deceleration set to: %u", quick_stop_deceleration);
     return true;
 }
+
+bool OrientalMotorController::MonitorPositionDriveProfileOperationReady() {
+    const int maxIterations = 50; // 50 iterations x 20ms = 1 second
+    uint16_t status = 0;
+    for (int i = 0; i < maxIterations; i++) {
+        if (!GetMotorStatus(&status)) {
+            RCLCPP_ERROR(logger_, "MonitorPositionDriveProfileOperationReady: GetMotorStatus failed");
+            return false;
+        }
+        // Assuming the 'Drive profile operation ready' flag is represented by bit 0 being 1.
+        if (status & 0x0001) {
+            RCLCPP_INFO(logger_, "Drive profile operation ready detected");
+            return true;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+    RCLCPP_ERROR(logger_, "MonitorPositionDriveProfileOperationReady: Drive profile operation ready not detected within 1 second");
+    return false;
+}
+
+
 }

@@ -307,28 +307,7 @@ bool OrientalMotorController::MonitorHomingProcedure() {
     }
 }
 
-bool OrientalMotorController::StartMotorToSwitchedOn() {
-    if (!FaultReset()) {
-         RCLCPP_ERROR(logger_, "StartMotorToSwitchedOn: FaultReset failed");
-         return false;
-    }
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    
-    if (!Shutdown()) {
-         RCLCPP_ERROR(logger_, "StartMotorToSwitchedOn: Shutdown failed");
-         return false;
-    }
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    
-    if (!SwitchOn()) {
-         RCLCPP_ERROR(logger_, "StartMotorToSwitchedOn: SwitchOn failed");
-         return false;
-    }
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-    RCLCPP_INFO(logger_, "Motor successfully switched on");
-    return true;
-}
 
 bool OrientalMotorController::SetHomingStartingVelocity(uint32_t starting_velocity) {
     static const uint8_t kSdoDownload4Cmd = 0x23;
@@ -394,46 +373,6 @@ bool OrientalMotorController::SetHomingBackwardsteps(uint32_t backward_steps) {
          return false;
     }
     RCLCPP_INFO(logger_, "SetHomingBackwardsteps: Backward steps set to: %u", backward_steps);
-    return true;
-}
-
-bool OrientalMotorController::DisplayModesOfOperation(uint8_t &mode) {
-    static const uint8_t kSdoUploadRequestCmd = 0x40;
-    static const uint8_t kSdoExpectedResponseUpload1 = 0x4F;
-    // Using the same object for Modes of Operation as in SetModesOfOperation
-    static const uint16_t kModesOfOperationObject = 0x6060;
-    static const uint8_t kModesOfOperationSubindex = 0x00;
-    std::vector<uint8_t> request_data = {
-        kSdoUploadRequestCmd,
-        static_cast<uint8_t>(kModesOfOperationObject & 0xFF),
-        static_cast<uint8_t>((kModesOfOperationObject >> 8) & 0xFF),
-        kModesOfOperationSubindex,
-        0x00, 0x00, 0x00, 0x00
-    };
-    std::vector<uint8_t> response_data;
-    if (!SdoTransaction(request_data, kSdoExpectedResponseUpload1, response_data)) {
-         RCLCPP_ERROR(logger_, "DisplayModesOfOperation: Failed to read current mode");
-         return false;
-    }
-    uint8_t mode_value = response_data[4];
-    mode = mode_value;
-    switch (mode_value) {
-        case 1:
-            RCLCPP_INFO(logger_, "DisplayModes :Profile Position Mode");
-            break;
-        case 3:
-            RCLCPP_INFO(logger_, "DisplayModes :Profile Velocity Mode");
-            break;
-        case 4:
-            RCLCPP_INFO(logger_, "DisplayModes :Profile Torque Mode");
-            break;
-        case 6:
-            RCLCPP_INFO(logger_, "DisplayModes :Homing Mode");
-            break;
-        default:
-            RCLCPP_WARN(logger_, "DisplayModes :Unknown Modes of Operation: %u", mode_value);
-            break;
-    }
     return true;
 }
 
